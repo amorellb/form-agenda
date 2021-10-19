@@ -5,17 +5,16 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Schedule</title>
 </head>
 <body>
-<h1>Agenda</h1>
+<h1>Schedule</h1>
 
 <?php
 //var_dump($_GET);
 ?>
 
 <?php
-
 if (isset($_GET['contacts'])) {
   $contacts = $_GET['contacts'];
 } else {
@@ -31,10 +30,12 @@ function add_delete_contact(&$contactsRef)
     $new_phone = filter_input(INPUT_GET, 'phone');
 
     if (empty($new_name)) {
-      echo 'Escribe un nombre por favor';
+      echo '<p style="color: crimson">Write a name please</p>';
     }
     if (empty($new_phone)) {
       unset($contactsRef[$new_name]);
+    } elseif (strlen((string)$new_phone) < 9 || strlen((string)$new_phone) > 9) {
+        echo '<p style="color: crimson">Write a valid phone number (9 digits)</p>';
     } else {
       $contactsRef[$new_name] = $new_phone;
     }
@@ -44,11 +45,14 @@ function add_delete_contact(&$contactsRef)
 function render_schedule($contactsRef)
 {
   if (empty($contactsRef)) {
-    echo 'No tiene contactos en su agenda';
+    echo '<h3>Empty schedule! No contacts found.</h3>';
+    echo '<p>Add some contacts and try again.</p>';
   } else {
+      echo '<h2>Contacts</h2>';
     echo '<ul>';
     foreach ($contactsRef as $name => $phone) {
-      echo "<li>$name: $phone</li>";
+      $final_name = ucfirst($name);
+      echo "<li>$final_name: $phone</li>";
     }
     echo '</ul>';
   }
