@@ -15,6 +15,10 @@
 ?>
 
 <?php
+/**
+ * Check if the GET array has a value named contacts. If so, then add its values to the contacts array.
+ * If not set, then create an empty array called contacts.
+ */
 if (isset($_GET['contacts'])) {
   $contacts = $_GET['contacts'];
 } else {
@@ -23,6 +27,15 @@ if (isset($_GET['contacts'])) {
 
 add_delete_contact($contacts);
 
+/**
+ * A function which, given an array of contacts, checks if the form was submitted and put the name and phone sent
+ * into two new variables.
+ * Then checks if the name variable is empty, to show a warning message if it is. Also checks if the phone input is
+ * empty, deleting the contact in this case or check the phone length, showing a proper message if it is larger or
+ * shorter than 9 digits.
+ * Finally, if the inputs are correct, both are added to the contacts array.
+ * @param $contactsRef
+ */
 function add_delete_contact(&$contactsRef)
 {
   if (isset($_GET['submit'])) {
@@ -42,6 +55,10 @@ function add_delete_contact(&$contactsRef)
   }
 }
 
+/**
+ * A function which, given an array of contacts, prints an unordered list of existing contacts.
+ * @param $contactsRef
+ */
 function render_schedule($contactsRef)
 {
   if (empty($contactsRef)) {
@@ -58,6 +75,13 @@ function render_schedule($contactsRef)
   }
 }
 
+/**
+ * A function which, given an array of contacts, prints a hidden input for every contact. Every hidden input are used
+ * to make the data persistent while sending and receiving it from the 'server'
+ * and to be able to print it into the list.
+ * Also prints a form that asks to the user to write a name and a phone number.
+ * @param $contactsRef
+ */
 function render_form(&$contactsRef)
 {
   ?>
